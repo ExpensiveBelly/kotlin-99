@@ -4,11 +4,11 @@ import com.natpryce.hamkrest.assertion.assertThat
 import com.natpryce.hamkrest.equalTo
 import org.junit.Test
 
-fun <T> pack(list: List<T>): List<List<T>> =
-    if (list.isEmpty()) emptyList()
+tailrec fun <T> pack(list: List<T>, result: List<List<T>> = emptyList()): List<List<T>> =
+    if (list.isEmpty()) result
     else {
         val packed = list.takeWhile { it == list.first() }
-        listOf(packed) + pack(list.drop(packed.size))
+        pack(list.drop(packed.size), result + listOf(packed))
     }
 
 class P09Test {
