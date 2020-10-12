@@ -1,7 +1,6 @@
 # Ninety-Nine Kotlin Problems
 
 [![Build Status](https://travis-ci.org/dkandalov/kotlin-99.svg?branch=master)](https://travis-ci.org/dkandalov/kotlin-99)
-[![Gitter chat](https://badges.gitter.im/kotlin-99/chat.svg)](https://gitter.im/kotlin-99/Lobby)
 
 ## Table of Contents
 
@@ -17,7 +16,7 @@
 
 ## Introduction
 
-This an adaptation of [Ninety-Nine Scala Problems](http://aperiodic.net/phil/scala/s-99/) by Phil Gold 
+This is an adaptation of [Ninety-Nine Scala Problems](http://aperiodic.net/phil/scala/s-99/) by Phil Gold 
 which itself is an adaptation of the [Ninety-Nine Prolog Problems](https://sites.google.com/site/prologsite/prolog-problems) 
 written by Werner Hett at the Berne University of Applied Sciences in Berne, Switzerland.
 Some problems have been altered to be more amenable to programming in [Kotlin][]. 
@@ -26,7 +25,7 @@ You might want to do these problems if you want to learn [Kotlin][], are interes
 The main reason to prefer this to using websites like hackerrank.com and codewars.com
 is that there is no vendor lock-in and no hidden agenda pursued by the website owner.
 
-Suggested workflow is to solve a problem yourself and then compare solution to the one provided.  
+The suggested workflow is to solve a problem yourself and then compare solution to the one provided.  
 Solutions are available by clicking on the link at the beginning of the problem description.
 Your goal should be to find the most elegant solution to the given problems. 
 Efficiency is important, but clarity is even more crucial. 
@@ -140,7 +139,7 @@ Example:
 ```
 
 ### [P12][] (*) Decode a run-length encoded list.
-Given a run-length code list generated as specified in problem P10, construct its uncompressed version.
+Given a run-length code list generated as specified in the problem P10, construct its uncompressed version.
 Example:
 ``` kotlin
 > decode(List((4, 'a), (1, 'b), (2, 'c), (2, 'a), (1, 'd), (4, 'e)))
@@ -178,7 +177,7 @@ Example:
 ```
 
 ### [P17][] (*) Split a list into two parts.
-The length of the first part is given. Use a Tuple for your result.
+The length of the first part is given. Use a `Pair` for your result.
 Example:
 ``` kotlin
 > split(3, "abcdefghijk".toList())
@@ -292,7 +291,7 @@ Example:
 ```
 b) Again, we suppose that a list contains elements that are lists themselves. 
 But this time the objective is to sort elements according to their length frequency; 
-i.e. in the default, sorting is done ascendingly, lists with rare lengths are placed, others with a more frequent length come later.
+i.e. lists with rare lengths are placed first, others with more frequent lengths come later.
 Example:
 ``` kotlin
 > lengthFreqSort(listOf("abc".toList(), "de".toList(), "fgh".toList(), "de".toList(), "ijkl".toList(), "mn".toList(), "o".toList()))
@@ -422,7 +421,7 @@ false	false	false
 ```
 
 ### P47 (*) Truth tables for logical expressions (2).
-For scala the task was to use implicit conversion.
+For Scala the task was to use implicit conversion.
 This is much simpler in Kotlin so the task omitted assuming it was done in the previous problem.
 
 ### [P48][] (*) Truth tables for logical expressions (3).
@@ -472,7 +471,7 @@ A binary tree is either empty or it is composed of a root element and two succes
 ![binary tree][binary-tree]
 
 We will use the following classes to represent binary trees (see [Tree.kt](https://github.com/dkandalov/kotlin-99/blob/master/src/org/kotlin99/binarytrees/Tree.kt)). 
-An ``End`` is equivalent to an empty tree. A ``Node`` has a value, and two descendant trees. 
+An ``End`` is equivalent to an empty tree. A ``Node`` has a value, and two child trees. 
 The ``toString()`` functions are relatively arbitrary and were written to produce minimal readable output.
 Note the usage of [variance annotation](https://kotlinlang.org/docs/reference/generics.html#declaration-site-variance) 
 ``out T`` which makes classes covariant; it will be able to hold subtypes of whatever type it's created for. 
@@ -766,8 +765,8 @@ A multiway tree is never empty. The set of successor trees is sometimes called a
 
 ![Multiway tree][multiway-tree]
 
-The code to represent these is somewhat simpler than the code for binary trees, partly because we don't separate classes 
-for nodes and terminators, and partly because we don't need the restriction that the value type be ordered.
+The code to represent multiway-trees is somewhat simpler than the code for binary trees, partly because we don't separate classes 
+for nodes and terminators, and partly because we don't need the restriction for the value type to be ordered.
 ``` kotlin
 data class MTree<out T>(val value: T, val children: List<MTree<T>> = emptyList()) {
 
@@ -870,7 +869,7 @@ but I think that would add too much of a barrier to the following questions.
 Our graphs use an incidence list internally. Each has a list of nodes and a list of edges. 
 Each node also has a list of edges that connect it to other nodes. 
 In a [directed graph](https://en.wikipedia.org/wiki/Directed_graph), 
-nodes that are the target of arcs do not have references to those arcs in their adjacency list.
+nodes, that are the target of arcs, do not have references to those arcs in their adjacency list.
 ``` kotlin
 class Graph<T, U> {
     val nodes: MutableMap<T, Node<T, U>> = HashMap()
@@ -1103,7 +1102,7 @@ true
 
 ### [P86][] (**) Node degree and graph coloration.
 a) Write a method ``Node.degree`` that determines the [degree](https://en.wikipedia.org/wiki/Degree_(graph_theory)) 
-of a given node in undirected graph.
+of a given node in an undirected graph.
 ``` kotlin
 > "[a-b, b-c, a-c, a-d]".toGraph().nodes["a"].degree()
 3

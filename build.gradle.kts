@@ -1,17 +1,14 @@
+
 plugins {
-    kotlin("jvm") version "1.3.61"
+    kotlin("jvm") version "1.4.0"
 }
 
 dependencies {
-    compile(kotlin("stdlib"))
-    testCompile("com.natpryce:hamkrest:1.4.2.2")
-    testCompile("junit:junit:4.12")
+    testImplementation("com.natpryce:hamkrest:1.7.0.2")
+    testImplementation("junit:junit:4.13")
 }
 
 repositories {
     jcenter()
+    maven ("https://dl.bintray.com/kotlin/kotlin-eap")
 }
-
-// New type inference fails in P93.kt
-//tasks.withType(KotlinCompile::class.java)
-//    .forEach { it.kotlinOptions { freeCompilerArgs = listOf("-Xnew-inference") } }
