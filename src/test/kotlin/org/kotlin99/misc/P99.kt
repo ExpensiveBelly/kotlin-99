@@ -5,7 +5,6 @@ import com.natpryce.hamkrest.equalTo
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
-import org.kotlin99.common.toSeq
 import org.kotlin99.common.transpose
 import org.kotlin99.misc.Crossword.Cell
 import org.kotlin99.misc.Crossword.Cell.Companion.vacant
@@ -26,7 +25,7 @@ data class Crossword(val sites: List<Site>) {
         if (siteToFill().isEmpty()) return sequenceOf(this)
         if (i == words.size || words.size - i < siteToFill().size) return emptySequence()
 
-        return siteToFill().filter { it.fits(words[i]) }.toSeq().flatMap { site ->
+        return siteToFill().filter { it.fits(words[i]) }.asSequence().flatMap { site ->
             copy().let { crossword ->
                 crossword.sites.find { it == site }!!.fill(words[i])
                 crossword.solve(words, i + 1)
@@ -42,16 +41,16 @@ data class Crossword(val sites: List<Site>) {
 
     private fun copy(): Crossword {
         val cells = sites.flatMap { it.cells }.distinct()
-        val copyByCell = cells.associate { Pair(it, it.copy()) }
+        val copyByCell = cells.associateWith { it.copy() }
         return Crossword(sites.map { site ->
-            Site(site.cells.map { copyByCell[it]!! })
+            Site(site.cells.map { copyByCell.getValue(it) })
         })
     }
 
     override fun toString(): String {
         val cells = sites.flatMap { it.cells }
-        val maxX = cells.map { it.x }.max()!!
-        val maxY = cells.map { it.y }.max()!!
+        val maxX = cells.map { it.x }.maxOrNull()!!
+        val maxY = cells.map { it.y }.maxOrNull()!!
 
         return (0..maxY).joinToString("\n") { y ->
             (0..maxX).map { x -> cells.find { it.x == x && it.y == y } }
@@ -62,7 +61,7 @@ data class Crossword(val sites: List<Site>) {
 
     companion object {
         fun parse(lines: List<String>): Crossword {
-            val maxWidth = lines.map { it.length }.max()!!
+            val maxWidth = lines.map { it.length }.maxOrNull()!!
             val paddedLines = lines.map { it.padEnd(maxWidth + 1, ' ') } + "".padEnd(maxWidth + 1, ' ')
             val cells = paddedLines.mapIndexed { row: Int, line: String ->
                 line.mapIndexed { col: Int, c: Char ->
@@ -97,7 +96,7 @@ data class Crossword(val sites: List<Site>) {
 
         fun fits(word: String): Boolean {
             if (cells.size != word.length) return false
-            return (0 until cells.size).all { i ->
+            return cells.indices.all { i ->
                 cells[i].c == vacant || cells[i].c == word[i]
             }
         }

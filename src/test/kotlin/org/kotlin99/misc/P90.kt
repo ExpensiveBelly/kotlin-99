@@ -6,6 +6,7 @@ import org.junit.Test
 import org.kotlin99.misc.EightQueens.Companion.Board
 import org.kotlin99.misc.EightQueens.Companion.Queen
 import org.kotlin99.misc.EightQueens.Companion.solutions
+import kotlin.math.abs
 
 @Suppress("unused")
 class EightQueens {
@@ -26,7 +27,7 @@ class EightQueens {
             constructor(vararg queens: Queen): this(maxPosition(queens), queens.asList())
 
             fun nextMoves(): List<Board> {
-                val nextColumn = (queens.map { it.column }.max() ?: -1) + 1
+                val nextColumn = (queens.map { it.column }.maxOrNull() ?: -1) + 1
                 return 0.until(size)
                     .map { Queen(it, nextColumn) }
                     .filter { isValidMove(it) }
@@ -40,7 +41,7 @@ class EightQueens {
             private fun isValidMove(queen: Queen): Boolean {
                 fun notOnTheSameLine() = queens.none { it.row == queen.row || it.column == queen.column }
                 fun notOnTheSameDiagonal() = queens.none {
-                    Math.abs(it.row - queen.row) == Math.abs(it.column - queen.column)
+                    abs(it.row - queen.row) == abs(it.column - queen.column)
                 }
                 return notOnTheSameLine() && notOnTheSameDiagonal()
             }
@@ -55,7 +56,7 @@ class EightQueens {
 
             companion object {
                 private fun maxPosition(queens: Array<out Queen>): Int {
-                    return (queens.flatMap { listOf(it.row, it.column) }.max() ?: -1) + 1
+                    return (queens.flatMap { listOf(it.row, it.column) }.maxOrNull() ?: -1) + 1
                 }
             }
         }
