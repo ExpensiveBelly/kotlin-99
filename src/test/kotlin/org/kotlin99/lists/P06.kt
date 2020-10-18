@@ -6,20 +6,40 @@ import org.junit.Test
 
 tailrec fun <T> isPalindrome(list: List<T>): Boolean =
     when {
-        list.size <= 1              -> true
+        list.size <= 1 -> true
         list.first() != list.last() -> false
-        else                        -> isPalindrome(list.drop(1).dropLast(1))
+        else -> isPalindrome(list.drop(1).dropLast(1))
     }
+
+@ExperimentalStdlibApi
+fun <T> List<T>.isPalindromeDeepRecursive() = DeepRecursiveFunction<List<T>, Boolean> { list ->
+    when {
+        list.size <= 1 -> true
+        list.first() != list.last() -> false
+        else -> callRecursive(list.drop(1).dropLast(1))
+    }
+}(this)
 
 @Suppress("unused")
 fun <T> isPalindrome_(list: List<T>) = list == list.asReversed()
 
 class P06Test {
-    @Test fun `find out whether a list is a palindrome`() {
+    @Test
+    fun `find out whether a list is a palindrome`() {
         assertThat(isPalindrome(listOf<Int>()), equalTo(true))
         assertThat(isPalindrome(listOf(1)), equalTo(true))
         assertThat(isPalindrome(listOf(1, 2)), equalTo(false))
         assertThat(isPalindrome(listOf(1, 2, 1)), equalTo(true))
         assertThat(isPalindrome(listOf(1, 2, 2, 1)), equalTo(true))
+    }
+
+    @ExperimentalStdlibApi
+    @Test
+    fun `find out whether a list is a palindrome deep recursive`() {
+        assertThat(emptyList<Int>().isPalindromeDeepRecursive(), equalTo(true))
+        assertThat(listOf(1).isPalindromeDeepRecursive(), equalTo(true))
+        assertThat(listOf(1, 2).isPalindromeDeepRecursive(), equalTo(false))
+        assertThat(listOf(1, 2, 1).isPalindromeDeepRecursive(), equalTo(true))
+        assertThat(listOf(1, 2, 2, 1).isPalindromeDeepRecursive(), equalTo(true))
     }
 }
