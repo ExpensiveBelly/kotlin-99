@@ -16,7 +16,7 @@ tailrec fun <T> reverse(list: List<T>, newList: List<T> = emptyList()): List<T> 
 fun <T> List<T>.reverseDeepRecursive() =
     DeepRecursiveFunction<List<T>, List<T>> { list ->
         if (list.size <= 1) list
-        else callRecursive(list.tail() + list.first())
+        else callRecursive(list.tail()) + list.first()
     }(this)
 
 class P05Test {
