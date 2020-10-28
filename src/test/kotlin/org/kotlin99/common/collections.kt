@@ -11,6 +11,18 @@ fun <T> Array<out T>.tail(): List<T> = drop(1)
 
 fun <T> Iterable<T>.tail(): List<T> = drop(1)
 
+fun <T> Iterable<T>.toSeq(): Sequence<T> {
+    val iterator = this.iterator()
+    return object: Sequence<T> {
+        override fun iterator() = iterator
+    }
+}
+
+fun <T> ArrayList<T>.fill(n: Int, value: T): ArrayList<T> {
+    repeat(1.rangeTo(n).count()) { add(value) }
+    return this
+}
+
 fun <T> List<T>.permutations(): List<List<T>> {
     if (size <= 1) return listOf(this)
     val head = first()
